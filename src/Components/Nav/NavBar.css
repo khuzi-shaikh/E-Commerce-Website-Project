@@ -1,0 +1,27 @@
+.navbar {
+  background-color: #1f5156;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-container ul li {
+  display: inline;
+  margin: 0px 40px;
+}
+.nav-container ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+}
+.logo-container h3 {
+  color: #f5b921;
+  font-size: 30px;
+  margin-left: 20px;
+}
+.nav-container ul li:hover a {
+  border: 1px solid #f5b921;
+  padding: 5px;
+}
