@@ -6,7 +6,7 @@ export const NavBar = () => {
   return (
     <div className="navbar">
       <div className="logo-container">
-        <h3>Career Next</h3>
+        <h3>Khuzi's Online Store</h3>
       </div>
       <div className="nav-container">
         <ul>
