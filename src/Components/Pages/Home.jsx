@@ -10,7 +10,9 @@ import {
 import axios from "axios";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
-import { addQuantity } from "../Utility";
+import { addQuantity, handleIncrementQty } from "../Utility";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";  
 
 export const Home = () => {
   const [data, setData] = useState([]);
@@ -18,13 +20,15 @@ export const Home = () => {
   const [addtoCart, setAddtoCart] = useState([]);
   const [category, setCategory] = useState([]);
   const [search, setSearch] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const getData = async () => {
     const res = await axios.get("https://fakestoreapi.com/products");
-    setData( addQuantity( res.data));
+    setData(addQuantity(res.data));
     setCopyData(addQuantity(res.data));
-    const response = await axios.get("https://fakestoreapi.com/products/categories");
+    const response = await axios.get(
+      "https://fakestoreapi.com/products/categories"
+    );
     // console.log(response);
     setCategory([...response.data, "All"]);
   };
@@ -34,12 +38,6 @@ export const Home = () => {
       setAddtoCart([...addtoCart, item]);
     }
   };
-  // const handleFilter = (value) => {
-  //   const searchData = copyData.filter((item) =>
-  //     item.title.toUpperCase().includes(value.toUpperCase())
-  //   );
-  //   setData(searchData);
-  // };
   const handleButtonSearch = (userCategory) => {
     if ("All" == userCategory) {
       setData(copyData);
@@ -51,9 +49,14 @@ export const Home = () => {
     }
   };
   const handleNavigate = (item) => {
-      // console.log(item);
-      navigate("./Detail",{state:item})
-  }
+    // console.log(item);
+    navigate("./Detail", { state: item });
+  };
+  const handleIncrement = (id) => {
+    const res = handleIncrementQty(copyData, id);
+    setData(res)
+    setCopyData(res)
+  };
   useEffect(() => {
     getData();
   }, []);
@@ -79,42 +82,6 @@ export const Home = () => {
             </Grid>
           );
         })}
-        {/* <Grid item xs={2}>
-          <Button
-            variant="contained"
-            className="Butto-container"
-            onClick={() => handleButtonSearch("women's clothing")}
-          >
-            Women
-          </Button>
-        </Grid> */}
-        {/* <Grid item xs={2}>
-          <Button
-            variant="contained"
-            className="Butto-container"
-            onClick={() => handleButtonSearch("electronics")}
-          >
-            Electric
-          </Button>
-        </Grid> */}
-        {/* <Grid item xs={2}>
-          <Button
-            variant="contained"
-            className="Butto-container"
-            onClick={() => handleButtonSearch("jewelery")}
-          >
-            Jewelery
-          </Button>
-        </Grid> */}
-        {/* <Grid item xs={1}>
-          <Button
-            variant="contained"
-            className="Butto-container"
-            onClick={() => handleButtonSearch("All")}
-          >
-            All
-          </Button>
-        </Grid> */}
         <Grid item xs={2}>
           <TextField
             label="Search"
@@ -144,7 +111,21 @@ export const Home = () => {
                     {item.title.length > 20 && "..."}
                   </h3>
                   <h4>Price: ${item.price}</h4>
-                  <Button variant="contained" color="error" onClick={()=>handleNavigate(item)}>
+                  <h2>
+                    {" "}
+                    <span>
+                      <RemoveIcon className="AddIcon" />
+                    </span>{" "}
+                    {item.userQuantity}{" "}
+                    <span>
+                      <AddIcon className="AddIcon" onClick={()=>handleIncrement(item.id)} />
+                    </span>{" "}
+                  </h2>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleNavigate(item)}
+                  >
                     Detail
                   </Button>
                   <Button
