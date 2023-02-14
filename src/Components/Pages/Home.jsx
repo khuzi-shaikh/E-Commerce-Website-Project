@@ -10,9 +10,13 @@ import {
 import axios from "axios";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
-import { addQuantity, handleIncrementQty } from "../Utility";
+import {
+  addQuantity,
+  handleDecrimentQty,
+  handleIncrementQty,
+} from "../Utility";
 import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";  
+import RemoveIcon from "@mui/icons-material/Remove";
 
 export const Home = () => {
   const [data, setData] = useState([]);
@@ -29,7 +33,6 @@ export const Home = () => {
     const response = await axios.get(
       "https://fakestoreapi.com/products/categories"
     );
-    // console.log(response);
     setCategory([...response.data, "All"]);
   };
   const handleAddtoCart = (item) => {
@@ -54,8 +57,13 @@ export const Home = () => {
   };
   const handleIncrement = (id) => {
     const res = handleIncrementQty(copyData, id);
-    setData(res)
-    setCopyData(res)
+    setData(res);
+    setCopyData(res);
+  };
+  const handleDecriment = (id) => {
+    const res = handleDecrimentQty(copyData, id);
+    setData(res);
+    setCopyData(res);
   };
   useEffect(() => {
     getData();
@@ -114,11 +122,17 @@ export const Home = () => {
                   <h2>
                     {" "}
                     <span>
-                      <RemoveIcon className="AddIcon" />
+                      <RemoveIcon
+                        className="AddIcon"
+                        onClick={() => handleDecriment(item.id)}
+                      />
                     </span>{" "}
                     {item.userQuantity}{" "}
                     <span>
-                      <AddIcon className="AddIcon" onClick={()=>handleIncrement(item.id)} />
+                      <AddIcon
+                        className="AddIcon"
+                        onClick={() => handleIncrement(item.id)}
+                      />
                     </span>{" "}
                   </h2>
                   <Button
