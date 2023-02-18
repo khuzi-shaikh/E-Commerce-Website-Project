@@ -22,39 +22,47 @@ import { useDispatch, useSelector } from "react-redux";
 export const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const select = useSelector((state)=>state.ProductReducer)
-  const [data, setData] = useState(select.product);
-  const [copyData, setCopyData] = useState(select.product);
-  const [category, setCategory] = useState(select.category);
-  const [addtoCart, setAddtoCart] = useState(select.cart);
+  const select = useSelector((state) => state);
+  const [data, setData] = useState(select.ProductReducer.product);
+  const [copyData, setCopyData] = useState(select.ProductReducer.product);
+  const [category, setCategory] = useState(select.ProductReducer.category);
+  const [addtoCart, setAddtoCart] = useState(select.ProductReducer.cart);
   const [search, setSearch] = useState("");
-console.log("select",select);
 
   const getData = async () => {
-    const res = await axios.get("https://fakestoreapi.com/products");
-    dispatch({
-      type:"ADD_PRODUCTS",
-      payload:addQuantity(res.data)
-    })
-    setCopyData(addQuantity(res.data))
-    setData(addQuantity(res.data))
-    const response = await axios.get(
-      "https://fakestoreapi.com/products/categories"
-    );
-    dispatch({
-      type:"ADD_TO_CATEGORY",
-      payload:[...response.data, "All"]
-    })
-    setCategory([...response.data, "All"])
+    if (select.ProductReducer.product.length > 0) {
+      setData(select.ProductReducer.product);
+      setCopyData(select.ProductReducer.product);
+    } else {
+      const res = await axios.get("https://fakestoreapi.com/products");
+      dispatch({
+        type: "ADD_PRODUCTS",
+        payload: addQuantity(res.data),
+      });
+      setData(addQuantity(res.data));
+      setCopyData(addQuantity(res.data));
+    }
+    if (select.ProductReducer.category.length > 0) {
+      setCategory(select.ProductReducer.category);
+    } else {
+      const response = await axios.get(
+        "https://fakestoreapi.com/products/categories"
+      );
+      dispatch({
+        type: "ADD_TO_CATEGORY",
+        payload: [...response.data, "All"],
+      });
+      setCategory([...response.data, "All"]);
+    }
   };
   const handleAddtoCart = (item) => {
     const duplicateCard = addtoCart.some((elem) => elem.id == item.id);
     if (!duplicateCard) {
-      setAddtoCart([...addtoCart, item])
+      setAddtoCart([...addtoCart, item]);
       dispatch({
-        type:"ADD_TO_CART",
-        payload:[...addtoCart, item]
-      })
+        type: "ADD_TO_CART",
+        payload: [...addtoCart, item],
+      });
     }
   };
   const handleButtonSearch = (userCategory) => {
@@ -68,13 +76,16 @@ console.log("select",select);
     }
   };
   const handleNavigate = (item) => {
-    // console.log(item);
     navigate("./Detail", { state: item });
   };
   const handleIncrement = (id) => {
     const res = handleIncrementQty(copyData, id);
     setData(res);
     setCopyData(res);
+    dispatch({
+      type: "ADD_PRODUCTS",
+      payload: res,
+    });
   };
   const handleDecriment = (id) => {
     const res = handleDecrimentQty(copyData, id);
@@ -93,7 +104,7 @@ console.log("select",select);
   return (
     <div>
       <Grid container spacing={4} style={{ marginTop: 0 }}>
-        {category.map((item,index) => {
+        {category.map((item, index) => {
           return (
             <Grid item xs={item == "All" ? 1 : 2} key={index}>
               <Button
