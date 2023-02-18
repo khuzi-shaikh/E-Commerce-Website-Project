@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {configStore} from "./Components/Redux/Store"
+import { Provider } from 'react-redux';
 
+const storeData = configStore()
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Provider store={storeData}>
     <App />
+    </Provider>
   </React.StrictMode>
 );
 

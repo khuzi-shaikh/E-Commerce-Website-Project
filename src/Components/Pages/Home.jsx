@@ -118,13 +118,15 @@ export const Home = () => {
                     Title: {item.title.substring(0, 20)}{" "}
                     {item.title.length > 20 && "..."}
                   </h3>
-                  <h4>Price: ${item.price}</h4>
+                  <h4>Price: $ {item.price}</h4>
                   <h2>
                     {" "}
                     <span>
                       <RemoveIcon
                         className="AddIcon"
-                        onClick={() => handleDecriment(item.id)}
+                        onClick={() =>
+                          item.userQuantity > 0 && handleDecriment(item.id)
+                        }
                       />
                     </span>{" "}
                     {item.userQuantity}{" "}
