@@ -17,28 +17,44 @@ import {
 } from "../Utility";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Home = () => {
-  const [data, setData] = useState([]);
-  const [copyData, setCopyData] = useState([]);
-  const [addtoCart, setAddtoCart] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const select = useSelector((state)=>state.ProductReducer)
+  const [data, setData] = useState(select.product);
+  const [copyData, setCopyData] = useState(select.product);
+  const [category, setCategory] = useState(select.category);
+  const [addtoCart, setAddtoCart] = useState(select.cart);
+  const [search, setSearch] = useState("");
+console.log("select",select);
 
   const getData = async () => {
     const res = await axios.get("https://fakestoreapi.com/products");
-    setData(addQuantity(res.data));
-    setCopyData(addQuantity(res.data));
+    dispatch({
+      type:"ADD_PRODUCTS",
+      payload:addQuantity(res.data)
+    })
+    setCopyData(addQuantity(res.data))
+    setData(addQuantity(res.data))
     const response = await axios.get(
       "https://fakestoreapi.com/products/categories"
     );
-    setCategory([...response.data, "All"]);
+    dispatch({
+      type:"ADD_TO_CATEGORY",
+      payload:[...response.data, "All"]
+    })
+    setCategory([...response.data, "All"])
   };
   const handleAddtoCart = (item) => {
     const duplicateCard = addtoCart.some((elem) => elem.id == item.id);
     if (!duplicateCard) {
-      setAddtoCart([...addtoCart, item]);
+      setAddtoCart([...addtoCart, item])
+      dispatch({
+        type:"ADD_TO_CART",
+        payload:[...addtoCart, item]
+      })
     }
   };
   const handleButtonSearch = (userCategory) => {
