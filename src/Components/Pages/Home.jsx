@@ -77,9 +77,9 @@ export const Home = () => {
   return (
     <div>
       <Grid container spacing={4} style={{ marginTop: 0 }}>
-        {category.map((item) => {
+        {category.map((item,index) => {
           return (
-            <Grid item xs={item == "All" ? 1 : 2}>
+            <Grid item xs={item == "All" ? 1 : 2} key={index}>
               <Button
                 variant="contained"
                 className="Butto-container"
