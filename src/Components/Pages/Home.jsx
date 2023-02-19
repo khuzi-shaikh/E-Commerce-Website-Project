@@ -185,5 +185,5 @@ export const Home = () => {
         })}
       </Grid>
     </div>
-  );
+  );   
 };
