@@ -5,12 +5,12 @@ import { RouteData } from "./Components/RouteData";
 
 function App() {
   const select = useSelector((state)=>state)
+  const loader = select.ProductReducer.loader;
   return (
     <div className="App">
-      <Loader/>
+      {loader && <Loader/>}
       <RouteData />
     </div>
   );
 }
-
 export default App;

@@ -11,7 +11,9 @@ import axios from "axios";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
 import {
+  activateLoader,
   addQuantity,
+  DeActivateLoader,
   handleDecrimentQty,
   handleIncrementQty,
 } from "../Utility";
@@ -34,11 +36,13 @@ export const Home = () => {
       setData(select.ProductReducer.product);
       setCopyData(select.ProductReducer.product);
     } else {
+      activateLoader(dispatch);
       const res = await axios.get("https://fakestoreapi.com/products");
       dispatch({
         type: "ADD_PRODUCTS",
         payload: addQuantity(res.data),
       });
+      DeActivateLoader(dispatch);
       setData(addQuantity(res.data));
       setCopyData(addQuantity(res.data));
     }
@@ -185,5 +189,5 @@ export const Home = () => {
         })}
       </Grid>
     </div>
-  );   
+  );
 };
