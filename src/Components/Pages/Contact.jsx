@@ -39,7 +39,7 @@ export const Contact = () => {
                   <Button
                     disabled={!item.availability}
                     variant="contained"
-                    color="success"
+                    style={{ backgroundColor: "black" }}
                   >
                     Buy Now
                   </Button>
@@ -50,7 +50,7 @@ export const Contact = () => {
         })}
         <Pagination
           count={Math.round(data.length / 8)}
-          color="secondary"
+          color="primary"
           onChange={(e, value) => setPage(value * 8)}
         />
       </Grid>
