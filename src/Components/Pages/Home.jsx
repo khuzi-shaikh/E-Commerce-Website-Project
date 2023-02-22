@@ -30,6 +30,8 @@ export const Home = () => {
   const [category, setCategory] = useState(select.ProductReducer.category);
   const [addtoCart, setAddtoCart] = useState(select.ProductReducer.cart);
   const [search, setSearch] = useState("");
+  const searchData = select.ProductReducer.searchData;
+  console.log("searchData", searchData);
 
   const getData = async () => {
     if (select.ProductReducer.product.length > 0) {
@@ -105,6 +107,12 @@ export const Home = () => {
     );
     setData(searchData);
   }, [search]);
+  useEffect(() => {
+    const res = copyData.filter((item) =>
+      item.title.toUpperCase().includes(searchData.toUpperCase())
+    );
+    setData(res);
+  }, [searchData]);
   return (
     <div>
       <Grid container spacing={4} style={{ marginTop: 0 }}>

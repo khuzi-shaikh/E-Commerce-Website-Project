@@ -3,7 +3,7 @@ const initialState = {
   product: [],
   category: [],
   loader: false,
-  searchData: "hello",
+  searchData:"",
 };
 export const ProductReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -37,7 +37,7 @@ export const ProductReducer = (state = initialState, action) => {
         loader: action.payload,
       };
       break;
-    case "SEARCH_DATA":
+    case "SEARCH_DATA_TAKE":
       return {
         ...state,
         searchData: action.payload,

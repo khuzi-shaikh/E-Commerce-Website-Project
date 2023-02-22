@@ -8,28 +8,36 @@ export const Contact = () => {
   const dispatch = useDispatch();
   const carData = select.CarReducer.carData;
   const [data, setData] = useState([]);
+  const [copyData, setCopyData] = useState([]);
   const [page, setPage] = useState(8);
-
+  const searchData1 = select.ProductReducer.searchData;
+  // console.log("copyData", copyData);
   const getCarData = async () => {
     const res = await axios.get("https://myfakeapi.com/api/cars/");
     dispatch({
       type: "ADD_CAR_DATA",
       payload: res.data.cars,
     });
+    setCopyData(...data, carData);
   };
-  console.log(data);
+  // console.log(data);
   useEffect(() => {
     setData(carData);
   }, [carData]);
-
   useEffect(() => {
     getCarData();
   }, []);
+  useEffect(() => {
+    const response = copyData.filter((item) =>
+      item.car.toUpperCase().includes(searchData1.toUpperCase())
+    );
+    setData(response);
+  }, [searchData1]);
   return (
     <div>
       <h1>Contact</h1>
       <Grid container spacing={4}>
-        {data.slice(page - 8, page).map((item) => {
+        {data?.slice(page - 8, page).map((item) => {
           return (
             <Grid item xs={3}>
               <Card>
